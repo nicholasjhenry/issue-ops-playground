@@ -1,0 +1,22 @@
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  OTP_VERSION: 25.1.2
+  ELIXIR_VERSION: 1.14.3
+
+jobs:
+  dump-context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        id: beam
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: .github/scripts/dump $GITHUB_CONTEXT
