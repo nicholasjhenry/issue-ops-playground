@@ -1,0 +1,32 @@
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  OTP_VERSION: 25.1.2
+  ELIXIR_VERSION: 1.14.3
+
+jobs:
+  dump-context:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.foo.outputs.hello }}
+      output2: ${{ steps.foo.outputs.foo }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        id: beam
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - name: Dump GitHub context
+        id: foo
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          {
+            "hello=world"
+            "foo=bar"
+          } >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.foo.outputs.hello }}"
+      - run: echo "${{ steps.foo.outputs.foo }}"

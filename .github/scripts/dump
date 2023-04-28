@@ -1,0 +1,14 @@
+#! /usr/bin/env elixir
+
+Mix.install([
+  {:jason, "~> 1.4"}
+])
+
+System.argv() |> Enum.join() |> Jason.decode!
+
+foo ="""
+hello=world
+foo=bar
+"""
+
+IO.inspect(foo)
