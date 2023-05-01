@@ -6,5 +6,9 @@ Mix.install([
 
 System.argv() |> Enum.join() |> Jason.decode! |> IO.inspect
 
-System.cmd("echo", ["foo=bar", ">>", "$GITHUB_OUTPUT"])
-System.cmd("echo", ["baz=qux", ">>", "$GITHUB_OUTPUT"])
+"GITHUB_OUTPUT"
+|> System.fetch_env!()
+|> File.open!([:write, :append])
+|> tap(&IO.puts(&1, "foo=bar"))
+|> tap(&IO.puts(&1, "baz=qux"))
+|> File.close()
