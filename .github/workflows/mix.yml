@@ -21,5 +21,6 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: .github/scripts/dump $GITHUB_CONTEXT
+      - run: echo "${{ toJson(steps) }}"
       - run: echo "${{ steps.foo.outputs.foo }}"
       - run: echo "${{ steps.foo.outputs.baz }}"
