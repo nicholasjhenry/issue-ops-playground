@@ -9,9 +9,6 @@ env:
 jobs:
   dump-context:
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.foo.outputs.hello }}
-      output2: ${{ steps.foo.outputs.foo }}
     steps:
       - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
@@ -23,10 +20,6 @@ jobs:
         id: foo
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          {
-            "hello=world"
-            "foo=bar"
-          } >> "$GITHUB_OUTPUT"
-      - run: echo "${{ steps.foo.outputs.hello }}"
+        run: .github/scripts/dump $GITHUB_CONTEXT
       - run: echo "${{ steps.foo.outputs.foo }}"
+      - run: echo "${{ steps.foo.outputs.baz }}"
