@@ -4,7 +4,7 @@ Mix.install([
   {:jason, "~> 1.4"}
 ])
 
-System.argv() |> Enum.join() |> Jason.decode!
+System.argv() |> Enum.join() |> Jason.decode! |> IO.inspect
 
 System.cmd("echo", ["foo=bar", ">>", "$GITHUB_OUTPUT"])
 System.cmd("echo", ["baz=qux", ">>", "$GITHUB_OUTPUT"])
