@@ -25,7 +25,7 @@ jobs:
       - name: Build, tag, and push docker image to Amazon ECR
         if: ${{ steps.issue-ops.outputs.action == 'build' }}
         env:
-          REGISTRY: 9999999.dkr.ecr.us-east-2.amazonaws.com
+          REGISTRY: ${{ steps.issue-ops.outputs.environment }}.dkr.ecr.us-east-2.amazonaws.com
           REPOSITORY: ${{ steps.issue-ops.outputs.service }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$(cat VERSION) .

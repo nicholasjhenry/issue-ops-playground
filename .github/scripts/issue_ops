@@ -5,7 +5,6 @@ Mix.install([
 ])
 
 defmodule IssueOps do
-
   def parse(%{"event" => %{"comment" => %{"body" => "." <> command}}} = _context) do
     command
     |> String.split(" ")
@@ -17,7 +16,11 @@ defmodule IssueOps do
   end
 
   defp parse_command([action, "service", service]) do
-    %{continue: true, action: action, service: service}
+    %{continue: true, action: action, service: service, environment: "development"}
+  end
+
+  defp parse_command([action, "service", service, "to", environment]) do
+    %{continue: true, action: action, service: service, environment: environment}
   end
 
   defp parse_command(command) do
