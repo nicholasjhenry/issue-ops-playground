@@ -36,7 +36,6 @@ end
 
 context =
   System.argv()
-  |> Enum.join()
   |> Jason.decode!
   |> IO.inspect
 

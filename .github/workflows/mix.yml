@@ -20,7 +20,7 @@ jobs:
         id: issue-ops
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: .github/scripts/issue_ops $GITHUB_CONTEXT
+        run: .github/scripts/issue_ops "$GITHUB_CONTEXT"
       - run: echo "${{ toJson(steps) }}"
       - name: Build, tag, and push docker image to Amazon ECR
         if: ${{ steps.issue-ops.outputs.action == 'build' }}
