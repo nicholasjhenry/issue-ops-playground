@@ -4,11 +4,45 @@ Mix.install([
   {:jason, "~> 1.4"}
 ])
 
-System.argv() |> Enum.join() |> Jason.decode! |> IO.inspect
+defmodule IssueOps do
+
+  def parse(%{"event" => %{"comment" => %{"body" => "." <> command}}} = _context) do
+    command
+    |> String.split(" ")
+    |> parse_command
+  end
+
+  def parse(%{"event" => %{"comment" => %{"body" => comment_body}}}) do
+    %{continue: false, comment_body: comment_body}
+  end
+
+  defp parse_command([action, "service", service]) do
+    %{continue: true, action: action, service: service}
+  end
+
+  defp parse_command(command) do
+    %{continue: false, comment_body: Enum.join(command, " ")}
+  end
+
+  def encode(file, context) do
+    output = Enum.map_join(context, "\n", &to_key_value/1)
+    IO.puts(file, output)
+  end
+
+  defp to_key_value({k,v}) do
+    "#{k}=#{v}"
+  end
+end
+
+context = System.argv() |> Enum.join() |> Jason.decode!
+
+ops =
+  context
+  |> IssueOps.parse()
+  |> IO.inspect
 
 "GITHUB_OUTPUT"
 |> System.fetch_env!()
 |> File.open!([:write, :append])
-|> tap(&IO.puts(&1, "action=build"))
-|> tap(&IO.puts(&1, "service=av_submission_ruling"))
+|> IssueOps.encode(ops)
 |> File.close()
