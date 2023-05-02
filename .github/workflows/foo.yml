@@ -1,0 +1,25 @@
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  OTP_VERSION: 25.1.2
+  ELIXIR_VERSION: 1.14.3
+
+jobs:
+  dump-context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Dump GitHub context
+        id: foo
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          cat << "EOF" >> "$GITHUB_OUTPUT"
+          foo=bar
+          baz=qux
+          EOF
+      - run: echo "${{ toJson(steps) }}"
+      - run: echo "${{ steps.foo.outputs.foo }}"
+      - run: echo "${{ steps.foo.outputs.baz }}"
