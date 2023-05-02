@@ -30,4 +30,4 @@ jobs:
           REPOSITORY: av_submission_ruling
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$(cat VERSION) .
-          docker push $REGISTRY/$REPOSITORY:$(cat VERSION)
+          # docker push $REGISTRY/$REPOSITORY:$(cat VERSION)
