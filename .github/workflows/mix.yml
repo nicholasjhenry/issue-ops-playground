@@ -29,3 +29,6 @@ jobs:
           REPOSITORY: ${{ steps.issue-ops.outputs.service }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$(cat VERSION) .
+      - name: Noop
+        if: ${{ steps.issue-ops.outputs.action != 'build' }}
+        run: echo "Skipping issue-ops"
