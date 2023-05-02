@@ -16,18 +16,16 @@ jobs:
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
-      - name: Dump GitHub context
-        id: foo
+      - name: GitHub context
+        id: context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: .github/scripts/dump $GITHUB_CONTEXT
       - run: echo "${{ toJson(steps) }}"
-      - run: echo "${{ steps.foo.outputs.foo }}"
-      - run: echo "${{ steps.foo.outputs.baz }}"
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: 9999999.dkr.ecr.us-east-2.amazonaws.com
-          REPOSITORY: av_submission_ruling
+          REPOSITORY: ${{ steps.context.outputs.repository }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$(cat VERSION) .
           # docker push $REGISTRY/$REPOSITORY:$(cat VERSION)
