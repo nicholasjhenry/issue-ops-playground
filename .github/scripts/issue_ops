@@ -9,5 +9,6 @@ System.argv() |> Enum.join() |> Jason.decode! |> IO.inspect
 "GITHUB_OUTPUT"
 |> System.fetch_env!()
 |> File.open!([:write, :append])
-|> tap(&IO.puts(&1, "repository=av-submission-ruling"))
+|> tap(&IO.puts(&1, "action=build"))
+|> tap(&IO.puts(&1, "service=av_submission_ruling"))
 |> File.close()
