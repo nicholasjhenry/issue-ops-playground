@@ -24,3 +24,10 @@ jobs:
       - run: echo "${{ toJson(steps) }}"
       - run: echo "${{ steps.foo.outputs.foo }}"
       - run: echo "${{ steps.foo.outputs.baz }}"
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: 9999999.dkr.ecr.us-east-2.amazonaws.com
+          REPOSITORY: av_submission_ruling
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$(cat VERSION) .
+          docker push $REGISTRY/$REPOSITORY:$(cat VERSION)
