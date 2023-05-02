@@ -32,8 +32,10 @@ jobs:
         env:
           REGISTRY: ${{ steps.issue-ops.outputs.environment }}.dkr.ecr.us-east-2.amazonaws.com
           REPOSITORY: ${{ steps.issue-ops.outputs.service }}
+          VERSION: $(cat VERSION)
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$(cat VERSION) .
+          echo $VERSION
+          docker build -t $REGISTRY/$REPOSITORY:$VERSION .
       - name: Noop
         if: ${{ steps.issue-ops.outputs.action != 'build' }}
         run: echo "Skipping issue-ops"
