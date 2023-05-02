@@ -34,7 +34,11 @@ defmodule IssueOps do
   end
 end
 
-context = System.argv() |> Enum.join() |> Jason.decode!
+context =
+  System.argv()
+  |> Enum.join()
+  |> Jason.decode!
+  |> IO.inspect
 
 ops =
   context
